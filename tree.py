@@ -106,8 +106,8 @@ class Tree:
         else:
             children_count = 1
 
+        # node has no children,  just make parent right or left child to none
         if children_count == 0:
-            # BST has one node in the whole of the tree
             if parent:
                 if parent.right_child is node:
                     parent.right_child = None
@@ -116,32 +116,62 @@ class Tree:
             else:
                 self.root_node = None
 
+        elif children_count == 1:
+            # initiate the node's child
+            next_node = None
+            if node.left_child:
+                next_node = node.left_child
+            else:
+                next_node = node.right_child
+            if parent:
+                if parent.right_child is node:
+                    parent.right_child = next_node
+                if node.left_child is not None:
+                    parent.left_child = next_node
+            else:
+                self.root_node = None
+
+        else:
+            parent_of_leftmost_node = node
+            leftmost_node = node.right_child
+            while leftmost_node.left_child:
+                parent_of_leftmost_node = leftmost_node
+                leftmost_node = leftmost_node.left_child
+
+            node.data = leftmost_node.data
+
+            if parent_of_leftmost_node.left_child == leftmost_node:
+                parent_of_leftmost_node.left_child = leftmost_node.right_child
+            else:
+                parent_of_leftmost_node.right_child = leftmost_node.right_child
+
+    def search(self, data):
+
+        curr = self.root_node
+        while True:
+            if curr is None:
+                return None
+
+            elif curr.data is data:
+                return data
+
+            elif data < curr.data:
+                curr = curr.left_child
+
+            else:
+                curr = curr.right_child
 
 
+if __name__ == "__main__":
+    tree = Tree()
+    tree.insert(5)
+    tree.insert(2)
+    tree.insert(7)
+    tree.insert(9)
+    tree.insert(1)
+    tree.insert(3)
+    # tree.remove(3)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    for i in range(1, 10):
+        found = tree.search(i)
+        print(f"{i}: {found}")
