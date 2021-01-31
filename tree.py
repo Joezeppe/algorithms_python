@@ -1,11 +1,3 @@
-"""
-    - Node: Each circled alphabet represents a node. A node is any structure that holds data.
-    - Binary Tree: A binary tree is one in which each node has a maximum of two children.
-    - BST or Binary Search Trees: is a binary tree that stores its nodes in such a way
-                                  to be able to search through the tree efficiently.
-"""
-
-
 class Node:
     def __init__(self, data):
         self.data = data
@@ -21,11 +13,6 @@ n4 = Node("left grandchild node")
 n1.left_child = n2
 n1.right_child = n3
 n2.left_child = n4
-
-current = n1
-while current:
-    print(current.data)
-    current = current.left_child
 
 
 class Tree:
@@ -44,6 +31,12 @@ class Tree:
         while curr.right_child:
             curr = curr.right_child
         return curr
+
+    def get_left_nodes(self):
+        current = self.root_node
+        while current:
+            print(current.data)
+            current = current.left_child
 
     # O(n) with n being the height of the tree
     def insert(self, data):
@@ -116,32 +109,29 @@ class Tree:
             else:
                 self.root_node = None
 
+        elif children_count == 1:
+            next_node = None
+            if node.left_child:
+                next_node = node.left_child
+            else:
+                next_node = node.right_child
 
+            if parent:
+                if parent.left_child is node:
+                    parent.left_child = next_node
+                else:
+                    parent.right_child = next_node
 
+            else:
+                self.root_node = next_node
 
+        else:
+            parent_of_leftmost_node = node
+            leftmost_node = node.right_child
+            while leftmost_node.left_child:
+                parent_of_leftmost_node = leftmost_node
+                leftmost_node = leftmost_node.left_child
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            node.data = leftmost_node.data
 
 
